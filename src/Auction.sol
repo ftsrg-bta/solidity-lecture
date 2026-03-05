@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.20;
 
-contract Auction {
+import {ReentrancyGuardTransient} from "@openzeppelin/contracts/utils/ReentrancyGuardTransient.sol";
+
+contract Auction is ReentrancyGuardTransient {
     address public highestBidder;
     uint256 public highestBid;
     mapping(address bidder => uint256 bidAmount) public pendingReturns;
@@ -23,7 +25,7 @@ contract Auction {
         emit BidPlaced(msg.sender, msg.value);
     }
 
-    function withdraw() external {
+    function withdraw() external nonReentrant {
         uint256 amount = pendingReturns[msg.sender];
         if (amount == 0) revert NothingToWithdraw();
 
