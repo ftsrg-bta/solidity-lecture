@@ -27,9 +27,9 @@ contract Auction {
         uint256 amount = pendingReturns[msg.sender];
         if (amount == 0) revert NothingToWithdraw();
 
+        pendingReturns[msg.sender] = 0;
+
         (bool success,) = msg.sender.call{value: amount}("");
         if (!success) revert TransferFailed();
-
-        pendingReturns[msg.sender] = 0;
     }
 }
