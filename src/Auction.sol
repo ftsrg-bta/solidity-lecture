@@ -5,6 +5,8 @@ contract Auction {
     address public highestBidder;
     uint256 public highestBid;
 
+    event BidPlaced(address indexed bidder, uint256 amount);
+
     error BidTooLow();
 
     function bid() external payable {
@@ -12,5 +14,7 @@ contract Auction {
 
         highestBidder = msg.sender;
         highestBid = msg.value;
+
+        emit BidPlaced(msg.sender, msg.value);
     }
 }
